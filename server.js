@@ -10,7 +10,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 
 // Database configuration
@@ -34,8 +36,14 @@ app.get('/', (req, res) => {
     res.send("Welcome, feel free to try some of our coffee drinks!");
 });
 
-// Add extra entrypoints
-require('./app/routes/drink_routes.js')(app);
+// menu entrypoint
+app.get('/menu', (req, res) => {
+    res.send("We only have drinks right now (we are new), but feel free to check them out at /menu/drinks");
+});
+
+// Drinks entrypoints
+const drinks = require('./app/routes/drink_routes.js');
+app.use('/menu/drinks', drinks);
 
 app.listen(port, () => {
     console.log("Server is listening on port " + port);
