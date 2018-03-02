@@ -1,0 +1,22 @@
+[{
+    "name": "Caffe latte",
+    "price": 5,
+    "size": "M",
+    "drink_type": "Expresso",
+    "ingredients": ["Milk", "Brewed Expresso"]
+},
+{
+    "name": "Caffe americano",
+    "price": 4,
+    "size": "S",
+    "drink_type": "Expresso",
+    "ingredients": ["Water", "Expresso"]
+},
+{
+    "name": "Green tea",
+    "price": 3,
+    "size": "L",
+    "drink_type": "Tea",
+    "ingredients": ["Water", "Tea"]
+}
+]
