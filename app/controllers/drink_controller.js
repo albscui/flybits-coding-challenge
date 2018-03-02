@@ -1,6 +1,6 @@
 // File: controllers/drink_controller.js
 
-var Drink = require("../models/drink_model.js");
+const Drink = require("../models/drink_model.js");
 
 exports.create = function (req, res) {
     // Create and Save a new Drink
@@ -22,7 +22,7 @@ exports.create = function (req, res) {
 
     drink.save(function (err, data) {
         if (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).send({
                 message: "Some error occured while creating the Drink."
             });
@@ -33,14 +33,14 @@ exports.create = function (req, res) {
 };
 
 exports.findAll = function (req, res) {
-    console.log(req.query);
     // Retrieve and return all drinks from the database
     Drink.find(req.query, function (err, data) {
         if (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).send({
                 message: "Some error occurred while retrieving drinks."
             });
+            return;
         } else {
             res.send(data);
         }
@@ -50,7 +50,7 @@ exports.findAll = function (req, res) {
 exports.findOne = function (req, res) {
     Drink.findById(req.params.drinkId, function (err, drink) {
         if (err) {
-            console.log(err);
+            console.error(err);
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
@@ -70,12 +70,11 @@ exports.findOne = function (req, res) {
     });
 };
 
-
 exports.update = function (req, res) {
     // Update a drink identified by the drinkId in the request
     Drink.findById(req.params.drinkId, function (err, drink) {
         if (err) {
-            console.log(err);
+            console.error(err);
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
@@ -111,7 +110,7 @@ exports.delete = function (req, res) {
     // Delete a drink with the specified drinkId in the request
     Drink.findByIdAndRemove(req.params.drinkId, function (err, drink) {
         if (err) {
-            console.log(err);
+            console.error(err);
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
