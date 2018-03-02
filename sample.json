@@ -13,6 +13,12 @@
     "ingredients": ["Water", "Expresso"]
 },
 {
+    "name": "Coffee",
+    "price": 3,
+    "drink_type": "Coffee",
+    "ingredients": ["Coffee"]
+},
+{
     "name": "Green tea",
     "price": 3,
     "size": "L",
