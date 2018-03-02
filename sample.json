@@ -14,7 +14,8 @@
 },
 {
     "name": "Coffee",
-    "price": 3,
+    "price": 2.5,
+    "size": "M",
     "drink_type": "Coffee",
     "ingredients": ["Coffee"]
 },
