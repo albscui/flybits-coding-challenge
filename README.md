@@ -8,6 +8,14 @@ Tools used:
 - MongoDB
 - Docker
 
+Key features:
+
+- ability to Create, Read, Update, Delete drink entires
+- ability to use batch style interface to add multiple entries at once
+- ability to query drinks with specified query strings
+- pagination of queries to prevent data blowup
+- dockerized for easy deployment
+
 ## Quickstart
 
 Option1: Clone this repo, then from the project's root directory run the following commands. This essentially builds the docker images locally and spins up 2 containers, one for the app and one for mongodb.
