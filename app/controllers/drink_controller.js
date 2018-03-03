@@ -1,6 +1,7 @@
 // File: controllers/drink_controller.js
 
 const Drink = require("../models/drink_model.js");
+var qLimit = 100;
 
 exports.create = function (req, res) {
     // Create and Save a new Drink
@@ -23,11 +24,11 @@ exports.create = function (req, res) {
     drink.save((err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send({
+            return res.status(500).send({
                 message: "Some error occured while creating the new Drink."
             });
         } else {
-            res.send(data);
+            return res.send(data);
         }
     });
 };
@@ -41,11 +42,11 @@ exports.createBatch = function (req, res) {
     Drink.collection.insert(bag, (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send({
+            return res.status(500).send({
                 message: "Some error occurred while batch creating drinks."
             });
         } else {
-            res.send({
+            return res.send({
                 message: data.result.n + " drinks were successfully added."
             });
         }
@@ -71,24 +72,43 @@ exports.findAll = function (req, res) {
         var _dateQuery = new Date(req.query.availableOn);
         Query = Query.where('start_avail_date').lte(_dateQuery).where('end_avail_date').gte(_dateQuery);
     }
+    // Handy method for finding what drinks are currently available
     if (req.query.available_now === 'true') {
         var _now = new Date();
         Query = Query.where('start_avail_date').lte(_now).where('end_avail_date').gte(_now);
     }
+    // Filter by various fields
     if (req.query.fields) {
         var _fields = req.query.fields.replace(',', ' ');
         Query = Query.select(_fields);
     }
+    // Pagination
+    if (req.query.limit) {
+        qLimit = Number(req.query.limit);
+        if (req.query.last_id) {
+            Query = Query.where('_id').gt(req.query.last_id);
+        }
+    }
+    Query = Query.limit(qLimit);
 
     Query.exec((err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send({
+            return res.status(500).send({
                 message: "Some error occurred while retrieving drinks."
             });
-            return;
         } else {
-            res.send(data);
+            if (Object.keys(data).length === 0) {
+                return res.send(data);
+            } else {
+                return res.send({
+                    next: "limit=" + qLimit + "&" + "last_id=" + data[data.length - 1]._id,
+                    limit: qLimit,
+                    size: data.length,
+                    results: data
+                });
+            }
+
         }
     });
 };
@@ -140,11 +160,11 @@ exports.update = function (req, res) {
         drink.set(req.body);
         drink.save((err, updatedDrink) => {
             if (err) {
-                res.status(500).send({
+                return es.status(500).send({
                     message: "Could not update drink with id " + req.params.drinkId
                 });
             } else {
-                res.send(updatedDrink);
+                return res.send(updatedDrink);
             }
         });
     });
@@ -171,7 +191,7 @@ exports.delete = function (req, res) {
             });
         }
 
-        res.send({
+        return res.send({
             message: "Drink deleted successfully!"
         });
     });

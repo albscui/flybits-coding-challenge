@@ -1,10 +1,5 @@
 // File: server.js
 
-// TODO:
-// - handle upper case and lowercase
-// - add pagination
-// - worry about modifying dates
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -27,12 +22,16 @@ mongoose.connection.once('open', console.log.bind(console, "Successfully connect
 
 // Root entrypoint
 app.get('/', (req, res) => {
-    res.send({message: "Welcome, feel free to try some of our coffee drinks!"});
+    res.send({
+        message: "Welcome, feel free to try some of our coffee drinks!"
+    });
 });
 
 // Menu entrypoint
 app.get('/menu', (req, res) => {
-    res.send({message: "We only have drinks right now, but feel free to check them out at /menu/drinks"});
+    res.send({
+        message: "We only have drinks right now, but feel free to check them out at /menu/drinks"
+    });
 });
 
 // Drinks entrypoints
