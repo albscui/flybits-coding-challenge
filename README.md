@@ -10,17 +10,18 @@ Tools used:
 
 ## Quickstart
 
-Clone this repo, then from the project's root directory run:
+Option1: Clone this repo, then from the project's root directory run the following commands. This essentially builds the docker images locally and spins up 2 containers, one for the app and one for mongodb.
 
 ```shell
 docker-compose build
 docker-compose up
 ```
 
-If you don't wish to build the image locally, you can run:
+Option2: If you don't wish to build the image locally, you can run:
 
 ```shell
 docker pull albscui/flybitscoffee
+docker-compose up
 ```
 
 ## API endpoints
@@ -29,26 +30,94 @@ docker pull albscui/flybitscoffee
 - `/menu/drinks/batch`: for populating the database with some sample data batch-style
 - `/menu/drinks/:drinkId`: query a specific drink by its unique `drinkId`
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/231df1f4f0af870017c6)
+
+If the button doesn't work, try [this postman link](https://www.getpostman.com/collections/231df1f4f0af870017c6).
+
 ### Examples
 
 ### `GET`
 
-- `/menu/drinks`
-- `/menu/drinks?name=Coffee`
-- `/menu/drinks?ingredients=Milk`
+- `/menu/drinks` queries all drinks (default pagesize is 100 entries)
+- `/menu/drinks?name=Coffee` queries drinks called Coffee
+- `/menu/drinks?ingredients=Milk` queries drinks that contains Milk in it
 
 ### `POST`
 
-- `/menu/drinks`
-- `/menu/drinks/batch`
+- `/menu/drinks` creates a new drink
+
+    Request.body:
+    ```json
+    {
+        "name": "Cappuccino",
+        "price": 4.5,
+        "size": "M",
+        "drink_type": "Expresso",
+        "ingredients": ["Milk", "Brewed Expresso"]
+    }
+    ```
+- `/menu/drinks/batch` creates multiple entries batch-style
+    ```json
+    [{
+        "name": "Caffe latte",
+        "price": 5,
+        "size": "M",
+        "drink_type": "Expresso",
+        "ingredients": ["Milk", "Brewed Expresso"]
+    },
+    {
+        "name": "Old Caffe americano",
+        "price": 4,
+        "size": "S",
+        "drink_type": "Expresso",
+        "ingredients": ["Water", "Expresso"],
+        "start_avail_date": "2008"
+    },
+    {
+        "name": "Caffe americano",
+        "price": 4,
+        "size": "S",
+        "drink_type": "Expresso",
+        "ingredients": ["Water", "Expresso"]
+    },
+    {
+        "name": "Coffee",
+        "price": 2.5,
+        "size": "M",
+        "drink_type": "Coffee",
+        "ingredients": ["Coffee"]
+    },
+    {
+        "name": "Green tea",
+        "price": 3,
+        "size": "L",
+        "drink_type": "Tea",
+        "ingredients": ["Water", "Tea"]
+    },
+    {
+        "name": "Cappuccino",
+        "price": 4.5,
+        "size": "L",
+        "drink_type": "Expresso",
+        "ingredients": ["Milk", "Brewed Expresso"]
+    }
+    ]
+    ```
 
 ### `PUT`
 
-- `/menus/drinks/5a9a4284831d6fc859d0bc57`
+- `/menus/drinks/5a9a4284831d6fc859d0bc57` updates a drink with id `5a9a4284831d6fc859d0bc57`
+    ```json
+    {
+        "price": <newPrice>,
+        "end_avail_date": <newEndAvailabilityDate>,
+        ...
+    }
+    ```
 
 ### `DELETE`
 
-- `/menu/drinks/5a9a4284831d6fc859d0bc57`
+- `/menu/drinks/5a9a4284831d6fc859d0bc57` deletes a drink with id `5a9a4284831d6fc859d0bc57`
 
 ## Database Schema
 
