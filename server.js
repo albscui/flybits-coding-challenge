@@ -13,12 +13,30 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Database configuration
-const mongoDB = process.env.MONGO_URL;
+const mongoDB = process.env.MONGO_URL || "mongodb://mongo:27017/flybitscoffee";
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 
-// mongoose.connection.on('error', console.error.bind(console, "MongoDB connection error: " + mongoDB));
-mongoose.connection.once('open', console.log.bind(console, "Successfully connected to MongoDB: " + mongoDB));
+// Mongoose connection event handlers
+mongoose.connection.on('error', (err) => {
+    console.error('Mongoose connection error:', err, '\nExiting now...');
+    process.exit(1);
+})
+mongoose.connection.once('open', () => {
+    console.log('Mongoose opened connection on ' + mongoDB);
+});
+mongoose.connection.on('connect', () => {
+    console.log('Mongoose successfully connected to ' + mongoDB);
+});
+mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose connection disconnected');
+});
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose connection disconnected through app termination');
+        process.exit(0);
+    });
+});
 
 // Root entrypoint
 app.get('/', (req, res) => {

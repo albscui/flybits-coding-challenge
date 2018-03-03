@@ -1,8 +1,15 @@
-FROM node:latest
-RUN mkdir -p /app
-WORKDIR /app
-COPY package*.json /app/
+FROM node:carbon
+
+# Create app directory and switch to it
+RUN mkdir -p /flybitscoffee
+WORKDIR /flybitscoffee
+
+# Install app dependencies
+COPY package*.json /flybitscoffee/
 RUN npm install
-COPY . /app
+
+# Bundle app source
+COPY . /flybitscoffee
+
 EXPOSE 3000
 CMD ["npm", "start"]

@@ -1,3 +1,4 @@
-.vscode/
-node_modules/
-data/
+node_modules
+npm-debug.log
+.vscode
+data

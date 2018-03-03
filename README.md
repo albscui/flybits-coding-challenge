@@ -10,18 +10,24 @@ Tools used:
 
 ## Quickstart
 
-Clone this repo, and from the project's root directory run:
+Clone this repo, then from the project's root directory run:
 
 ```shell
 docker-compose build
 docker-compose up
 ```
 
+If you don't wish to build the image locally, you can run:
+
+```shell
+docker pull albscui/flybitscoffee
+```
+
 ## API endpoints
 
 - `/menu/drinks`: this is where all the logic is happening
 - `/menu/drinks/batch`: for populating the database with some sample data batch-style
-- `/menu/drinks/:drinkId`: query a specific drink by its unique drinkId
+- `/menu/drinks/:drinkId`: query a specific drink by its unique `drinkId`
 
 ### Examples
 
@@ -46,7 +52,7 @@ docker-compose up
 
 ## Database Schema
 
-The following is a javascript notation schema for Drink. Notice that `end_avail_date` is by default set to an arbirtarily chosen future date.
+The `Drink` schema is a ODM that models our drinks. Most of the properties are simple and straight forward, though some properties have constraints, such as `size` can only be one of `S, M, L` and can only be uppercase. Notice that `start_avail_date` is by default set to the current date and `end_avail_date` is by default set to the year `2042`, which is just an arbitrarily chosen year far enough into the future. Another solution would be to set the value of `end_avail_date` to be `start_avail_date + $SOME_CONSTANT_NUMBER`.
 
 ```js
 {

@@ -2,8 +2,7 @@ version: "2"
 services:
   flybitscoffee:
     build: .
-    volumes:
-      - ./:/app
+    image: albscui/flybitscoffee
     links:
       - mongo
     ports:

@@ -1,6 +1,7 @@
 // File: models/drink_model.js
 
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 const DrinkSchema = mongoose.Schema({
     name: String,
