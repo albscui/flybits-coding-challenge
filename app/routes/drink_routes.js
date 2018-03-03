@@ -6,12 +6,15 @@ const drinks = require('../controllers/drink_controller.js');
 
 // Log the time
 router.use(function timeLog(req, res, next) {
-    console.log('Time: ', Date.now())
-    next()
+    console.log('Time: ', Date());
+    next();
 })
 
 // Create new drinks
 router.post('/', drinks.create);
+
+// Create new drinks batch style
+router.post('/batch', drinks.createBatch);
 
 // Retrieve all drinks
 router.get('/', drinks.findAll);

@@ -1,18 +1,17 @@
 version: "2"
 services:
   flybitscoffee:
-    container_name: flybitscoffee
-    image: flybitscoffee
-    restart: always
     build: .
-    ports:
-      - "3000:3000"
+    volumes:
+      - ./:/app
     links:
       - mongo
-    depends_on:
-      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/flybitscoffee
+    restart: always
   mongo:
-    container_name: mongo
     image: mongo
     volumes:
       - ./data:/data/db

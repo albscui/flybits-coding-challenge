@@ -1,8 +1,8 @@
 FROM node:latest
-RUN mkdir -p /usr/src/flybitscoffee
-WORKDIR /usr/src/flybitscoffee
-COPY package*.json /usr/src/flybitscoffee/
+RUN mkdir -p /app
+WORKDIR /app
+COPY package*.json /app/
 RUN npm install
-COPY . /usr/src/flybitscoffee/
+COPY . /app
 EXPOSE 3000
 CMD ["npm", "start"]

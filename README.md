@@ -10,7 +10,10 @@ Tools used:
 
 ## Quickstart
 
+Clone this repo, and from the project's root directory run:
+
 ```shell
+docker-compose build
 docker-compose up
 ```
 

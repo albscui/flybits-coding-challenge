@@ -24,7 +24,7 @@ exports.create = function (req, res) {
         if (err) {
             console.error(err);
             res.status(500).send({
-                message: "Some error occured while creating the Drink."
+                message: "Some error occured while creating the new Drink."
             });
         } else {
             res.send(data);
@@ -32,8 +32,34 @@ exports.create = function (req, res) {
     });
 };
 
+exports.createBatch = function (req, res) {
+    const bag = [];
+    for (var i = 0; i < req.body.length; i++) {
+        var drink = new Drink(req.body[i]);
+        bag.push(drink);
+    }
+    Drink.collection.insert(bag, (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({
+                message: "Some error occurred while batch creating drinks."
+            });
+        } else {
+            res.send({
+                message: data.result.n + " drinks were successfully added."
+            });
+        }
+    })
+};
+
 exports.findAll = function (req, res) {
     // Retrieve and return all drinks from the database
+    var Query;
+    if (req.query.availableOn) {
+        console.log(req.query.availableOn);
+        var dateObj = new Date(req.query.availableOn);
+
+    }
     Drink.find(req.query, (err, data) => {
         if (err) {
             console.error(err);

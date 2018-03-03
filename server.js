@@ -2,6 +2,8 @@
 
 // TODO:
 // - query for drinks available on a specific date
+// - query by fields
+// - handle upper case and lowercase
 // - add pagination
 // - worry about modifying dates
 
@@ -18,28 +20,21 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Database configuration
-const dbConfig = require("./db_config.js");
-const mongoDB = dbConfig.url;
+const mongoDB = process.env.MONGO_URL;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 
-// Bind connection to error event, log appropriate messages
-mongoose.connection.on('error', () => {
-    console.error("Could not connect to the database. Exiting now...");
-    process.exit();
-});
-mongoose.connection.once('open', () => {
-    console.log("Successfully connected to MongoDB");
-});
+// mongoose.connection.on('error', console.error.bind(console, "MongoDB connection error: " + mongoDB));
+mongoose.connection.once('open', console.log.bind(console, "Successfully connected to MongoDB: " + mongoDB));
 
 // Root entrypoint
 app.get('/', (req, res) => {
-    res.send("Welcome, feel free to try some of our coffee drinks!");
+    res.send({message: "Welcome, feel free to try some of our coffee drinks!"});
 });
 
 // Menu entrypoint
 app.get('/menu', (req, res) => {
-    res.send("We only have drinks right now, but feel free to check them out at /menu/drinks");
+    res.send({message: "We only have drinks right now, but feel free to check them out at /menu/drinks"});
 });
 
 // Drinks entrypoints
