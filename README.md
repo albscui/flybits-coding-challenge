@@ -121,7 +121,7 @@ If postman doesn't work, below are some examples.
 
 ### `PUT`
 
-- `/menus/drinks/5a9a4284831d6fc859d0bc57`: updates a drink with id `5a9a4284831d6fc859d0bc57`
+- `/menu/drinks/5a9a4284831d6fc859d0bc57`: updates a drink with id `5a9a4284831d6fc859d0bc57`
     ```json
     {
         "price": <newPrice>,
