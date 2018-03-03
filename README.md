@@ -35,7 +35,7 @@ docker-compose up
 ## API endpoints
 
 - `/menu/drinks`: this is where all the logic is happening
-- `/menu/drinks/batch`: for populating the database with some sample data batch-style
+- `/menu/drinks/batch`: a batch interface for populating the database with multiple entries at once 
 - `/menu/drinks/:drinkId`: query a specific drink by its unique `drinkId`
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/231df1f4f0af870017c6)
@@ -44,15 +44,22 @@ If the button doesn't work, try [this postman link](https://www.getpostman.com/c
 
 ### Examples
 
+If postman doesn't work, below are some examples.
+
 ### `GET`
 
-- `/menu/drinks` queries all drinks (default pagesize is 100 entries)
-- `/menu/drinks?name=Coffee` queries drinks called Coffee
-- `/menu/drinks?ingredients=Milk` queries drinks that contains Milk in it
+- `/menu/drinks`: queries all drinks (default pagesize is 100 entries)
+- `/menu/drinks?name=Coffee`: queries drinks called Coffee
+- `/menu/drinks?ingredients=Milk`: queries drinks that contains Milk in it
+
+#### pagination
+
+- `/menu/drinks?limit=5`: for initial page, returns `<last_id_from_prev_page>`
+- `/menu/drinks?limit=5&last_id=<last_id_from_prev_page>`: for the next page 
 
 ### `POST`
 
-- `/menu/drinks` creates a new drink
+- `/menu/drinks`: creates a new drink
 
     Request.body:
     ```json
@@ -64,7 +71,7 @@ If the button doesn't work, try [this postman link](https://www.getpostman.com/c
         "ingredients": ["Milk", "Brewed Expresso"]
     }
     ```
-- `/menu/drinks/batch` creates multiple entries batch-style
+- `/menu/drinks/batch`: creates multiple entries batch-style
     ```json
     [{
         "name": "Caffe latte",
@@ -114,7 +121,7 @@ If the button doesn't work, try [this postman link](https://www.getpostman.com/c
 
 ### `PUT`
 
-- `/menus/drinks/5a9a4284831d6fc859d0bc57` updates a drink with id `5a9a4284831d6fc859d0bc57`
+- `/menus/drinks/5a9a4284831d6fc859d0bc57`: updates a drink with id `5a9a4284831d6fc859d0bc57`
     ```json
     {
         "price": <newPrice>,
@@ -125,7 +132,7 @@ If the button doesn't work, try [this postman link](https://www.getpostman.com/c
 
 ### `DELETE`
 
-- `/menu/drinks/5a9a4284831d6fc859d0bc57` deletes a drink with id `5a9a4284831d6fc859d0bc57`
+- `/menu/drinks/5a9a4284831d6fc859d0bc57`: deletes a drink with id `5a9a4284831d6fc859d0bc57`
 
 ## Database Schema
 
