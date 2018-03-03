@@ -54,13 +54,33 @@ exports.createBatch = function (req, res) {
 
 exports.findAll = function (req, res) {
     // Retrieve and return all drinks from the database
-    var Query;
-    if (req.query.availableOn) {
-        console.log(req.query.availableOn);
-        var dateObj = new Date(req.query.availableOn);
 
+    // Filter the request query down to the keys in the schema
+    const query = {}
+    for (var k of Object.keys(Drink.schema.paths)) {
+        if (k in req.query) {
+            query[k] = req.query[k];
+        }
     }
-    Drink.find(req.query, (err, data) => {
+
+    // The mongoose Query object
+    var Query = Drink.find(query);
+
+    // Chaining queries
+    if (req.query.available_on) {
+        var _dateQuery = new Date(req.query.availableOn);
+        Query = Query.where('start_avail_date').lte(_dateQuery).where('end_avail_date').gte(_dateQuery);
+    }
+    if (req.query.available_now === 'true') {
+        var _now = new Date();
+        Query = Query.where('start_avail_date').lte(_now).where('end_avail_date').gte(_now);
+    }
+    if (req.query.fields) {
+        var _fields = req.query.fields.replace(',', ' ');
+        Query = Query.select(_fields);
+    }
+
+    Query.exec((err, data) => {
         if (err) {
             console.error(err);
             res.status(500).send({

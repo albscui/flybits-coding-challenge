@@ -1,8 +1,6 @@
 // File: server.js
 
 // TODO:
-// - query for drinks available on a specific date
-// - query by fields
 // - handle upper case and lowercase
 // - add pagination
 // - worry about modifying dates

@@ -6,6 +6,14 @@
     "ingredients": ["Milk", "Brewed Expresso"]
 },
 {
+    "name": "Old Caffe americano",
+    "price": 4,
+    "size": "S",
+    "drink_type": "Expresso",
+    "ingredients": ["Water", "Expresso"],
+    "start_avail_date": "2008"
+},
+{
     "name": "Caffe americano",
     "price": 4,
     "size": "S",
@@ -25,5 +33,12 @@
     "size": "L",
     "drink_type": "Tea",
     "ingredients": ["Water", "Tea"]
+},
+{
+    "name": "Cappuccino",
+    "price": 4,
+    "size": "L",
+    "drink_type": "Expresso",
+    "ingredients": ["Milk", "Brewed Expresso"]
 }
 ]

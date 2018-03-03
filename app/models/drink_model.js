@@ -20,9 +20,9 @@ const DrinkSchema = mongoose.Schema({
     },
     end_avail_date: {
         type: Date,
-        default: new Date("2042-01-01")
+        default: new Date("2042")
     },
-    ingredients: []
+    ingredients: [ String ]
 });
 
 module.exports = mongoose.model('Drink', DrinkSchema);
