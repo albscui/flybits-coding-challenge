@@ -3,6 +3,9 @@ services:
   flybitscoffee:
     build: .
     image: albscui/flybitscoffee
+    depends_on:
+      - mongo
+    command: ["./wait-for-it.sh", "mongo:27017", "--", "node", "server.js"]
     links:
       - mongo
     ports:

@@ -17,7 +17,7 @@ docker-compose build
 docker-compose up
 ```
 
-Option2: If you don't wish to build the image locally, you can run:
+Option2: If you don't wish to build the image locally, you can pull a pre-built image from dockerhub.
 
 ```shell
 docker pull albscui/flybitscoffee
@@ -161,3 +161,7 @@ A NoSQL database has a couple of advantages:
 - makes modeling drinks easy (just a bunch of key=val pairs)
 - MongoDB is free, and there are lots of documentation online
 - easy to implement pagination
+
+### Pagination
+
+A linked list is used to implement pagination. The `_id` property of mongodb documents has numerical ordering. Therefore, when querying for a new a page, I supply a `limit size` and the `_id` of the last document from the previous page.

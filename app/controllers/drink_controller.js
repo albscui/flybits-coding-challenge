@@ -1,7 +1,6 @@
 // File: controllers/drink_controller.js
 
 const Drink = require("../models/drink_model.js");
-var qLimit = 100;
 
 exports.create = function (req, res) {
     // Create and Save a new Drink
@@ -34,11 +33,12 @@ exports.create = function (req, res) {
 };
 
 exports.createBatch = function (req, res) {
-    const bag = [];
-    for (var i = 0; i < req.body.length; i++) {
-        var drink = new Drink(req.body[i]);
-        bag.push(drink);
-    }
+    // const bag = [];
+    // for (var i = 0; i < req.body.length; i++) {
+    //     var drink = new Drink(req.body[i]);
+    //     bag.push(drink);
+    // }
+    const bag = req.body.map(i => new Drink(i));
     Drink.collection.insert(bag, (err, data) => {
         if (err) {
             console.error(err);
@@ -69,7 +69,7 @@ exports.findAll = function (req, res) {
 
     // Chaining queries
     if (req.query.available_on) {
-        var _dateQuery = new Date(req.query.availableOn);
+        var _dateQuery = new Date(req.query.available_on);
         Query = Query.where('start_avail_date').lte(_dateQuery).where('end_avail_date').gte(_dateQuery);
     }
     // Handy method for finding what drinks are currently available
@@ -83,14 +83,18 @@ exports.findAll = function (req, res) {
         Query = Query.select(_fields);
     }
     // Pagination
+    var qLimit;
     if (req.query.limit) {
         qLimit = Number(req.query.limit);
         if (req.query.last_id) {
             Query = Query.where('_id').gt(req.query.last_id);
         }
+    } else {
+        qLimit = 10;
     }
     Query = Query.limit(qLimit);
 
+    // Run query
     Query.exec((err, data) => {
         if (err) {
             console.error(err);
@@ -101,14 +105,14 @@ exports.findAll = function (req, res) {
             if (Object.keys(data).length === 0) {
                 return res.send(data);
             } else {
+                var uri = req.baseUrl + '?limit=' + qLimit + '&last_id=' + data[data.length - 1]._id
                 return res.send({
-                    next: "limit=" + qLimit + "&" + "last_id=" + data[data.length - 1]._id,
+                    next: encodeURI(uri),
                     limit: qLimit,
                     size: data.length,
                     results: data
                 });
             }
-
         }
     });
 };
@@ -160,7 +164,8 @@ exports.update = function (req, res) {
         drink.set(req.body);
         drink.save((err, updatedDrink) => {
             if (err) {
-                return es.status(500).send({
+                console.error(err);
+                return res.status(500).send({
                     message: "Could not update drink with id " + req.params.drinkId
                 });
             } else {

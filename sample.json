@@ -1,44 +1,51 @@
 [{
-    "name": "Caffe latte",
-    "price": 5,
-    "size": "M",
-    "drink_type": "Expresso",
-    "ingredients": ["Milk", "Brewed Expresso"]
-},
-{
-    "name": "Old Caffe americano",
-    "price": 4,
-    "size": "S",
-    "drink_type": "Expresso",
-    "ingredients": ["Water", "Expresso"],
-    "start_avail_date": "2008"
-},
-{
-    "name": "Caffe americano",
-    "price": 4,
-    "size": "S",
-    "drink_type": "Expresso",
-    "ingredients": ["Water", "Expresso"]
-},
-{
-    "name": "Coffee",
-    "price": 2.5,
-    "size": "M",
-    "drink_type": "Coffee",
-    "ingredients": ["Coffee"]
-},
-{
-    "name": "Green tea",
-    "price": 3,
-    "size": "L",
-    "drink_type": "Tea",
-    "ingredients": ["Water", "Tea"]
-},
-{
-    "name": "Cappuccino",
-    "price": 4,
-    "size": "L",
-    "drink_type": "Expresso",
-    "ingredients": ["Milk", "Brewed Expresso"]
-}
+        "name": "Caffe latte",
+        "price": 5,
+        "size": "M",
+        "drink_type": "Expresso",
+        "ingredients": ["Milk", "Brewed Expresso"]
+    },
+    {
+        "name": "Old Caffe americano",
+        "price": 4,
+        "size": "S",
+        "drink_type": "Expresso",
+        "ingredients": ["Water", "Expresso"],
+        "start_avail_date": "2008"
+    },
+    {
+        "name": "Caffe americano",
+        "price": 4,
+        "size": "S",
+        "drink_type": "Expresso",
+        "ingredients": ["Water", "Expresso"]
+    },
+    {
+        "name": "Coffee",
+        "price": 2.5,
+        "size": "M",
+        "drink_type": "Coffee",
+        "ingredients": ["Coffee"]
+    },
+    {
+        "name": "Green tea",
+        "price": 3,
+        "size": "L",
+        "drink_type": "Tea",
+        "ingredients": ["Water", "Tea"]
+    },
+    {
+        "name": "Black tea",
+        "price": 3,
+        "size": "L",
+        "drink_type": "Tea",
+        "ingredients": ["Water", "Tea"]
+    },
+    {
+        "name": "Cappuccino",
+        "price": 4,
+        "size": "L",
+        "drink_type": "Expresso",
+        "ingredients": ["Milk", "Brewed Expresso"]
+    }
 ]
