@@ -1,8 +1,8 @@
 // File: models/drink_model.js
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var DrinkSchema = mongoose.Schema({
+const DrinkSchema = mongoose.Schema({
     name: String,
     drink_type: {type: String, enum: ["Water", "Coffee", "Tea", "Expresso"]},
     price: Number,

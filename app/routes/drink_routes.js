@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const drinks = require('../controllers/drink_controller.js');
 
-// middleware that is specific to this router
+// Log the time
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now())
     next()
@@ -13,7 +13,7 @@ router.use(function timeLog(req, res, next) {
 // Create new drinks
 router.post('/', drinks.create);
 
-//  Retrieve all drinks
+// Retrieve all drinks
 router.get('/', drinks.findAll);
 
 // Retrieve a single drink by drinkId

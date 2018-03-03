@@ -1,7 +1,9 @@
 // File: server.js
 
-// TODO: use /menu/drinks
-// add pagination
+// TODO:
+// - query for drinks available on a specific date
+// - add pagination
+// - worry about modifying dates
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -21,12 +23,11 @@ const mongoDB = dbConfig.url;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 
-//Bind connection to error event (to get notification of connection errors)
+// Bind connection to error event, log appropriate messages
 mongoose.connection.on('error', () => {
     console.error("Could not connect to the database. Exiting now...");
     process.exit();
 });
-
 mongoose.connection.once('open', () => {
     console.log("Successfully connected to MongoDB");
 });
@@ -36,9 +37,9 @@ app.get('/', (req, res) => {
     res.send("Welcome, feel free to try some of our coffee drinks!");
 });
 
-// menu entrypoint
+// Menu entrypoint
 app.get('/menu', (req, res) => {
-    res.send("We only have drinks right now (we are new), but feel free to check them out at /menu/drinks");
+    res.send("We only have drinks right now, but feel free to check them out at /menu/drinks");
 });
 
 // Drinks entrypoints

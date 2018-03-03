@@ -20,7 +20,7 @@ exports.create = function (req, res) {
         ingredients: req.body.ingredients
     });
 
-    drink.save(function (err, data) {
+    drink.save((err, data) => {
         if (err) {
             console.error(err);
             res.status(500).send({
@@ -34,7 +34,7 @@ exports.create = function (req, res) {
 
 exports.findAll = function (req, res) {
     // Retrieve and return all drinks from the database
-    Drink.find(req.query, function (err, data) {
+    Drink.find(req.query, (err, data) => {
         if (err) {
             console.error(err);
             res.status(500).send({
@@ -48,7 +48,7 @@ exports.findAll = function (req, res) {
 };
 
 exports.findOne = function (req, res) {
-    Drink.findById(req.params.drinkId, function (err, drink) {
+    Drink.findById(req.params.drinkId, (err, drink) => {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
@@ -72,7 +72,7 @@ exports.findOne = function (req, res) {
 
 exports.update = function (req, res) {
     // Update a drink identified by the drinkId in the request
-    Drink.findById(req.params.drinkId, function (err, drink) {
+    Drink.findById(req.params.drinkId, (err, drink) => {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
@@ -91,16 +91,14 @@ exports.update = function (req, res) {
             });
         }
 
-        drink.title = req.body.title;
-        drink.content = req.body.content;
-
-        drink.save(function (err, data) {
+        drink.set(req.body);
+        drink.save((err, updatedDrink) => {
             if (err) {
                 res.status(500).send({
                     message: "Could not update drink with id " + req.params.drinkId
                 });
             } else {
-                res.send(data);
+                res.send(updatedDrink);
             }
         });
     });
@@ -108,7 +106,7 @@ exports.update = function (req, res) {
 
 exports.delete = function (req, res) {
     // Delete a drink with the specified drinkId in the request
-    Drink.findByIdAndRemove(req.params.drinkId, function (err, drink) {
+    Drink.findByIdAndRemove(req.params.drinkId, (err, drink) => {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
