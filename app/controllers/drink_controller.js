@@ -1,6 +1,7 @@
 // File: controllers/drink_controller.js
 
 const Drink = require("../models/drink_model.js");
+const LIMIT = 10;
 
 exports.create = function (req, res) {
     // Create and Save a new Drink
@@ -83,14 +84,9 @@ exports.findAll = function (req, res) {
         Query = Query.select(_fields);
     }
     // Pagination
-    var qLimit;
-    if (req.query.limit) {
-        qLimit = Number(req.query.limit);
-        if (req.query.last_id) {
-            Query = Query.where('_id').gt(req.query.last_id);
-        }
-    } else {
-        qLimit = 10;
+    var qLimit = Number(req.query.limit) || LIMIT;
+    if (req.query.last_id) {
+        Query = Query.where('_id').gt(req.query.last_id);
     }
     Query = Query.limit(qLimit);
 
