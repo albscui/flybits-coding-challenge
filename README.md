@@ -181,4 +181,7 @@ A NoSQL database has a couple of advantages:
 
 ### Pagination
 
-A linked list is used to implement pagination. The `_id` property of mongodb documents has numerical ordering. Therefore, when querying for a new a page, I supply a `limit size` and the `_id` of the last document from the previous page.
+A linked list is used to implement pagination. The default `_id` object in MongoDB is indexed, and has numerical ordering. The idea is to take advantage of this ordering to do 2 things:
+
+1. Get the `_id` of the last entry in the current page, call it `last_id`
+2. Get all the entries greatern than `last_id`, and limit the page size to a certain number of entries
