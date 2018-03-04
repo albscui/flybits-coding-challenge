@@ -32,6 +32,8 @@ docker pull albscui/flybitscoffee
 docker-compose up
 ```
 
+The API should be running on `localhost:3000`, and mongo should be running on `localhost:27017`.
+
 ## API endpoints
 
 - `/menu/drinks`: this is where all the logic is happening
