@@ -136,9 +136,9 @@ If postman doesn't work, below are some examples.
 
 - `/menu/drinks/5a9a4284831d6fc859d0bc57`: deletes a drink with id `5a9a4284831d6fc859d0bc57`
 
-## Database Schema
+## Drink Schema
 
-The `Drink` schema is a ODM that models our drinks. Most of the properties are simple and straight forward, though some properties have constraints, such as `size` can only be one of `S, M, L` and can only be uppercase. Notice that `start_avail_date` is by default set to the current date and `end_avail_date` is by default set to the year `2042`, which is just an arbitrarily chosen year far enough into the future. Another solution would be to set the value of `end_avail_date` to be `start_avail_date + $SOME_CONSTANT_NUMBER`.
+Most of the properties are simple and straight forward, though some properties have constraints, such as `size` can only be one of `S`, `M`, `L` and can only be uppercase. Notice that `start_avail_date` is by default set to the current date and `end_avail_date` is by default set to the year `2042`, which is just an arbitrarily chosen year far enough into the future. Another solution would be to set the value of `end_avail_date` to be `start_avail_date + $SOME_CONSTANT_NUMBER`.
 
 ```js
 {
