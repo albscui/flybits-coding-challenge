@@ -152,15 +152,15 @@ The `Drink` schema is a ODM that models our drinks. Most of the properties are s
 
 ### Why MongoDB
 
-For this challenge, we only needed to model a drink, so we don't really need a relational database to model various relationships between different objects. What about NoSQL then?
+We need to model some form of drinks in a coffee shop but we don't have a set of concrete data requirements. Using SQL would be a bit of a premature optimization because SQL requires us to identify data schema up-front, which could make our system too rigid. What about NoSQL?
 
 A NoSQL database has a couple of advantages:
 
-- a bit more flexible and easier to manage
-- the `key=val` pair structure is very intuitive
-- makes modeling drinks easy (just a bunch of key=val pairs)
-- MongoDB is free, and there are lots of documentation online
-- easy to implement pagination
+- **Flexibility:** more flexible and easier to manage than SQL, ideal for projects with evolving data requirements (what if we want to add a new property to drinks in the future?)
+- **Manageability:** Mongo's `key=val` pair structure is very intuitive, makes our life easier
+- **Scalability:** although not very important for this project, the NoSQL's horizontal scalability via sharding prepares us for an ever growing and potentially very large dataset
+- **Performance:** mongo is very fast for simple queries
+- Easy to start coding immediately
 
 ### Pagination
 
