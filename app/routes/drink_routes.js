@@ -4,12 +4,6 @@ const express = require('express');
 const router = express.Router();
 const drinks = require('../controllers/drink_controller.js');
 
-// Log the time
-router.use(function timeLog(req, res, next) {
-    console.log('Time: ', Date());
-    next();
-})
-
 // Create new drinks
 router.post('/', drinks.create);
 

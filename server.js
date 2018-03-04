@@ -25,23 +25,19 @@ mongoose.connection.on('error', (err) => {
 mongoose.connection.once('open', () => {
     console.log('Mongoose opened connection on ' + mongoDB);
 });
-mongoose.connection.on('connect', () => {
-    console.log('Mongoose successfully connected to ' + mongoDB);
-});
-mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose connection disconnected');
-});
-process.on('SIGINT', () => {
-    mongoose.connection.close(() => {
-        console.log('Mongoose connection disconnected through app termination');
-        process.exit(0);
-    });
-});
+
+var myLogger = function (req, res, next) {
+    var dateNow = new Date();
+    console.log(dateNow, req.method, req.originalUrl);
+    next();
+}
+
+app.use(myLogger)
 
 // Root entrypoint
 app.get('/', (req, res) => {
     res.send({
-        message: "Welcome, feel free to try some of our coffee drinks!"
+        message: "Welcome, feel free to try some of our coffee drinks! Use /menu/drinks to query"
     });
 });
 

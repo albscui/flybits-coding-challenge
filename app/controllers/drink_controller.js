@@ -6,7 +6,7 @@ const LIMIT = 10;
 exports.create = function (req, res) {
     // Create and Save a new Drink
     if (!req.body.ingredients) {
-        return res.status(400).send({
+        res.status(400).send({
             message: "Drink must have ingredients!"
         });
     }
@@ -24,85 +24,75 @@ exports.create = function (req, res) {
     drink.save((err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Some error occured while creating the new Drink."
             });
         } else {
-            return res.send(data);
+            res.send(data);
         }
     });
 };
 
 exports.createBatch = function (req, res) {
-    // const bag = [];
-    // for (var i = 0; i < req.body.length; i++) {
-    //     var drink = new Drink(req.body[i]);
-    //     bag.push(drink);
-    // }
     const bag = req.body.map(i => new Drink(i));
     Drink.collection.insert(bag, (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Some error occurred while batch creating drinks."
             });
         } else {
-            return res.send({
+            res.send({
                 message: data.result.n + " drinks were successfully added."
             });
         }
-    })
+    });
 };
 
 exports.findAll = function (req, res) {
-    // Retrieve and return all drinks from the database
+    // Retrieve and all drinks from the database
 
     // Filter the request query down to the keys in the schema
-    const query = {}
-    for (var k of Object.keys(Drink.schema.paths)) {
-        if (k in req.query) {
-            query[k] = req.query[k];
-        }
-    }
+    const query = filterQueryByKeys(req.query, Object.keys(Drink.schema.paths));
 
     // The mongoose Query object
-    var Query = Drink.find(query);
+    var MQuery = Drink.find(query);
 
     // Chaining queries
     if (req.query.available_on) {
         var _dateQuery = new Date(req.query.available_on);
-        Query = Query.where('start_avail_date').lte(_dateQuery).where('end_avail_date').gte(_dateQuery);
+        MQuery = MQuery.where('start_avail_date').lte(_dateQuery).where('end_avail_date').gte(_dateQuery);
     }
     // Handy method for finding what drinks are currently available
     if (req.query.available_now === 'true') {
         var _now = new Date();
-        Query = Query.where('start_avail_date').lte(_now).where('end_avail_date').gte(_now);
+        MQuery = MQuery.where('start_avail_date').lte(_now).where('end_avail_date').gte(_now);
     }
     // Filter by various fields
     if (req.query.fields) {
         var _fields = req.query.fields.replace(',', ' ');
-        Query = Query.select(_fields);
+        MQuery = MQuery.select(_fields);
     }
     // Pagination
     var qLimit = Number(req.query.limit) || LIMIT;
     if (req.query.last_id) {
-        Query = Query.where('_id').gt(req.query.last_id);
+        MQuery = MQuery.where('_id').gt(req.query.last_id);
     }
-    Query = Query.limit(qLimit);
+    MQuery = MQuery.limit(qLimit);
 
     // Run query
-    Query.exec((err, data) => {
+    MQuery.exec((err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Some error occurred while retrieving drinks."
             });
         } else {
             if (Object.keys(data).length === 0) {
-                return res.send(data);
+                res.send(data);
             } else {
                 var uri = req.baseUrl + '?limit=' + qLimit + '&last_id=' + data[data.length - 1]._id
-                return res.send({
+                res.send({
                     next: encodeURI(uri),
                     limit: qLimit,
                     size: data.length,
@@ -118,16 +108,16 @@ exports.findOne = function (req, res) {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
-                return res.status(404).send({
+                res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
                 });
             }
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Error retrieving drink with id " + req.params.drinkId
             });
         }
         if (!drink) {
-            return res.status(404).send({
+            res.status(404).send({
                 message: "Drink not found with id " + req.params.drinkId
             });
         }
@@ -142,30 +132,32 @@ exports.update = function (req, res) {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
-                return res.status(404).send({
+                res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
                 });
             }
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Error finding drink with id " + req.params.drinkId
             });
         }
 
         if (!drink) {
-            return res.status(404).send({
+            res.status(404).send({
                 message: "Drink not found with id " + req.params.drinkId
             });
         }
 
+        // Override the drink document with the fields in the req.body
         drink.set(req.body);
+
         drink.save((err, updatedDrink) => {
             if (err) {
                 console.error(err);
-                return res.status(500).send({
+                res.status(500).send({
                     message: "Could not update drink with id " + req.params.drinkId
                 });
             } else {
-                return res.send(updatedDrink);
+                res.send(updatedDrink);
             }
         });
     });
@@ -177,23 +169,34 @@ exports.delete = function (req, res) {
         if (err) {
             console.error(err);
             if (err.kind === 'ObjectId') {
-                return res.status(404).send({
+                res.status(404).send({
                     message: "Drink not found with id " + req.params.drinkId
                 });
             }
-            return res.status(500).send({
+            res.status(500).send({
                 message: "Could not delete drink with id " + req.params.drinkId
             });
         }
 
         if (!drink) {
-            return res.status(404).send({
+            res.status(404).send({
                 message: "Drink not found with id " + req.params.drinkId
             });
         }
 
-        return res.send({
+        res.send({
             message: "Drink deleted successfully!"
         });
     });
 };
+
+// Helper functions
+function filterQueryByKeys(reqQ, keys) {
+    const query = {};
+    for (var k of keys) {
+        if (k in reqQ) {
+            query[k] = reqQ[k]
+        }
+    }
+    return query;
+}
