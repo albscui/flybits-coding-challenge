@@ -5,13 +5,13 @@ A simple RESTful API for querying drinks at a coffee shop.
 Tools used:
 
 - Express
-- MongoDB
+- Mongoose + MongoDB
 - Docker
 
 Key features:
 
-- ability to Create, Read, Update, Delete drink entires
-- ability to use batch style interface to add multiple entries at once
+- ability to Create, Read, Update, Delete drinks
+- ability to use batch style interface to add multiple drinks at once
 - ability to query drinks with specified query strings
 - pagination of queries to prevent data blowup
 - dockerized for easy deployment
@@ -37,7 +37,7 @@ The API should be running on `localhost:3000`, and mongo should be running on `l
 ## API endpoints
 
 - `/menu/drinks`: this is where all the logic is happening
-- `/menu/drinks/batch`: a batch interface for populating the database with multiple entries at once 
+- `/menu/drinks/batch`: a batch interface for populating the database with multiple drinks via a single request
 - `/menu/drinks/:drinkId`: query a specific drink by its unique `drinkId`
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/231df1f4f0af870017c6)
@@ -50,7 +50,7 @@ If postman doesn't work, below are some examples.
 
 ### `GET`
 
-- `/menu/drinks`: queries all drinks (default pagesize is 100 entries)
+- `/menu/drinks`: queries all drinks (default pagesize_limit = 100)
 - `/menu/drinks?name=Coffee`: queries drinks called Coffee
 - `/menu/drinks?ingredients=Milk`: queries drinks that contains Milk in it
 
@@ -73,7 +73,7 @@ If postman doesn't work, below are some examples.
         "ingredients": ["Milk", "Brewed Expresso"]
     }
     ```
-- `/menu/drinks/batch`: creates multiple entries batch-style
+- `/menu/drinks/batch`: creates multiple documents via a single request
     ```json
     [{
         "name": "Caffe latte",
@@ -184,7 +184,7 @@ A NoSQL database has a couple of advantages:
 A linked list is used to implement pagination. The default `_id` object in MongoDB is indexed, and has numerical ordering. The idea is to take advantage of this ordering to do 2 things:
 
 1. Get the `_id` of the last entry in the current page, call it `last_id`
-2. Get all the entries greatern than `last_id`, and limit the page size to a certain number of entries
+2. Get all the entries with `_id` greatern than `last_id`, limit the page size with `limit`, return new page along with pointer to the next page
 
 ## What's next
 
