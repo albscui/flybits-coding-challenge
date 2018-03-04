@@ -185,3 +185,11 @@ A linked list is used to implement pagination. The default `_id` object in Mongo
 
 1. Get the `_id` of the last entry in the current page, call it `last_id`
 2. Get all the entries greatern than `last_id`, and limit the page size to a certain number of entries
+
+## What's next
+
+- This is a very simple API and we can try a serverless approach, using a cloud service like AWS Lambda, so we don't need to pay for constant server uptime
+- Setup CI and CD
+- Integrate this microservice into the company's tech stack
+- Orchestrate with Kubernetes
+- Get new feature requests from stakeholders
