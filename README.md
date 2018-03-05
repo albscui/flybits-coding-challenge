@@ -54,10 +54,10 @@ If postman doesn't work, below are some examples.
 
 - `/menu/drinks`: queries all drinks (default pagesize_limit = 100)
 - `/menu/drinks?name=Coffee`: queries drinks called Coffee
-- `/menu/drinks?ingredients=Milk`: queries drinks that contains Milk in it
-  - Queries for ingredients can be either in lowercase or uppercase.
-  - For multiple ingredients either: `/menu/drinks?ingredients=milk&ingredients=Syrup` or `/menu/drinks?ingredients=milk,Syrup`
-- `/menu/drinks?field=name,price,size`: filter the results by field names
+- `/menu/drinks?ingredients=Milk,syrup`: queries drinks that contains milk AND syrup
+  - Queries are case-insensitive
+  - Another way is `/menu/drinks?ingredients=Milk&ingredients=syrup`
+- `/menu/drinks?fields=name,price,size`: filter the results by field names
 - `/menu/drinks?available_on=<date>`: get drinks that are available on a specific date
 - `/menu/drinks?available_now`: a helper method for getting the drinks that are currently available
 
