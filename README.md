@@ -18,9 +18,10 @@ Key features:
 
 ## Quickstart
 
-Option1: Clone this repo, then from the project's root directory run the following commands. This essentially builds the docker images locally and spins up 2 containers, one for the app and one for mongodb.
+Option1: Clone/download this repo, then from the project's root directory run the following commands. This essentially builds the docker images locally and spins up 2 containers, one for the app and one for Mongodb. Note that initially the database would be empty, so you need to populate it with some data first.
 
 ```shell
+# You need port 3000 and 27017 open for webservice and mongo respectively
 docker-compose build
 docker-compose up
 ```
@@ -40,6 +41,7 @@ The API should be running on `localhost:3000`, and mongo should be running on `l
 - `/menu/drinks/batch`: a batch interface for populating the database with multiple drinks via a single request
 - `/menu/drinks/:drinkId`: query a specific drink by its unique `drinkId`
 
+After getting the local service running, try clicking on the postman button to test them out.
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/231df1f4f0af870017c6)
 
 If the button doesn't work, try [this postman link](https://www.getpostman.com/collections/231df1f4f0af870017c6).
@@ -53,6 +55,11 @@ If postman doesn't work, below are some examples.
 - `/menu/drinks`: queries all drinks (default pagesize_limit = 100)
 - `/menu/drinks?name=Coffee`: queries drinks called Coffee
 - `/menu/drinks?ingredients=Milk`: queries drinks that contains Milk in it
+  - Queries for ingredients can be either in lowercase or uppercase.
+  - For multiple ingredients either: `/menu/drinks?ingredients=milk&ingredients=Syrup` or `/menu/drinks?ingredients=milk,Syrup`
+- `/menu/drinks?field=name,price,size`: filter the results by field names
+- `/menu/drinks?available_on=<date>`: get drinks that are available on a specific date
+- `/menu/drinks?available_now`: a helper method for getting the drinks that are currently available
 
 #### pagination
 
@@ -90,34 +97,7 @@ If postman doesn't work, below are some examples.
         "ingredients": ["Water", "Expresso"],
         "start_avail_date": "2008"
     },
-    {
-        "name": "Caffe americano",
-        "price": 4,
-        "size": "S",
-        "drink_type": "Expresso",
-        "ingredients": ["Water", "Expresso"]
-    },
-    {
-        "name": "Coffee",
-        "price": 2.5,
-        "size": "M",
-        "drink_type": "Coffee",
-        "ingredients": ["Coffee"]
-    },
-    {
-        "name": "Green tea",
-        "price": 3,
-        "size": "L",
-        "drink_type": "Tea",
-        "ingredients": ["Water", "Tea"]
-    },
-    {
-        "name": "Cappuccino",
-        "price": 4.5,
-        "size": "L",
-        "drink_type": "Expresso",
-        "ingredients": ["Milk", "Brewed Expresso"]
-    }
+    ...
     ]
     ```
 
@@ -138,7 +118,7 @@ If postman doesn't work, below are some examples.
 
 ## Drink Schema
 
-Most of the properties are simple and straight forward, though some properties have constraints, such as `size` can only be one of `S`, `M`, `L` and can only be uppercase. Notice that `start_avail_date` is by default set to the current date and `end_avail_date` is by default set to the year `2042`, which is just an arbitrarily chosen year far enough into the future. Another solution would be to set the value of `end_avail_date` to be `start_avail_date + $SOME_CONSTANT_NUMBER`.
+Most of the properties are simple and straight forward, though some properties have constraints, such as `size` can only be one of `S`, `M`, `L` and can only be uppercase. Notice that `start_avail_date` is by default set to the current date and `end_avail_date` is by default set to the year `2042`, which is just an arbitrarily chosen year far enough into the future. Admittedly, this is a hacky solution, another solution would be to set the value of `end_avail_date` to be `start_avail_date + $SOME_CONSTANT_NUMBER`.
 
 ```js
 {
@@ -188,6 +168,7 @@ A linked list is used to implement pagination. The default `_id` object in Mongo
 
 ## What's next
 
+- The database is not indexed, we can create duplicated drinks, this is partly because I wanted a quick way to populate the database with data and test out pagination. We should index and prevent duplicates in production.
 - This is a very simple API and we can try a serverless approach, using a cloud service like AWS Lambda, so we don't need to pay for constant server uptime
 - Setup CI and CD
 - Integrate this microservice into the company's tech stack

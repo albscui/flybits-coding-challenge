@@ -7,32 +7,30 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Database configuration
-const mongoDB = process.env.MONGO_URL || "mongodb://mongo:27017/flybitscoffee";
-mongoose.connect(mongoDB);
+const DATABASE_NAME = 'flybitscoffee'
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:27017/' + DATABASE_NAME;
 mongoose.Promise = global.Promise;
+mongoose.connect(MONGO_URL).then(
+    () => {
+        console.log('Mongoose: initial connection successful! Connected on ' + MONGO_URL);
+    },
+    err => {
+        console.error('Mongoose:', err.message, '\nExiting now...');
+        process.exit(-1);
+    }
+);
 
-// Mongoose connection event handlers
-mongoose.connection.on('error', (err) => {
-    console.error('Mongoose connection error:', err, '\nExiting now...');
-    process.exit(1);
-})
-mongoose.connection.once('open', () => {
-    console.log('Mongoose opened connection on ' + mongoDB);
-});
-
+// Log requests
 var myLogger = function (req, res, next) {
     var dateNow = new Date();
     console.log(dateNow, req.method, req.originalUrl);
     next();
 }
-
-app.use(myLogger)
+app.use(myLogger);
 
 // Root entrypoint
 app.get('/', (req, res) => {
@@ -53,5 +51,5 @@ const drinks = require('./app/routes/drink_routes.js');
 app.use('/menu/drinks', drinks);
 
 app.listen(port, () => {
-    console.log("Server is listening on port " + port);
-})
+    console.log("flybitscoffee service is listening on port " + port);
+});
